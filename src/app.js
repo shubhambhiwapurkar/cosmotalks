@@ -7,10 +7,6 @@ require('dotenv').config();
 require('./models/user.model');
 require('./services/passport');
 
-console.log('MONGO_URI:', process.env.MONGO_URI);
-console.log('GOOGLE_CLIENT_ID:', process.env.GOOGLE_CLIENT_ID);
-console.log('GOOGLE_CLIENT_SECRET:', process.env.GOOGLE_CLIENT_SECRET);
-console.log('COOKIE_KEY:', process.env.COOKIE_KEY);
 const app = express();
 
 if (process.env.NODE_ENV !== 'test') {
@@ -29,7 +25,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(
   cors({
-    origin: 'http://localhost:3000',
+    origin: ['http://localhost:3000', 'https://your-frontend-url.com'],
     credentials: true,
   })
 );
