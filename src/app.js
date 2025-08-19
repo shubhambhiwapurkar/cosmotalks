@@ -25,7 +25,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(
   cors({
-    origin: process.env.NODE_ENV === 'production' ? '*' : 'http://localhost:3000', // TODO: Change this to your production frontend URL
+    origin: 'http://localhost:3000',
     credentials: true,
   })
 );
