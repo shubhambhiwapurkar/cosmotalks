@@ -3,7 +3,7 @@ const app = require('../app');
 
 describe('Auth Routes', () => {
   it('should redirect to Google for authentication', async () => {
-    const res = await request(app).get('/auth/google');
+    const res = await request(app).get('/api/auth/google');
     expect(res.statusCode).toEqual(302);
     expect(res.headers.location).toContain('accounts.google.com');
   });
