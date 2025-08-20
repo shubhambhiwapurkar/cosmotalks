@@ -25,7 +25,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(
   cors({
-    origin: ['http://localhost:3000', 'https://your-frontend-url.com'],
+    origin: ['http://localhost:3000', 'https://your-frontend-url.com', 'https://cosmostudio--cosmotherapy2008.europe-west4.hosted.app'],
     credentials: true,
   })
 );
