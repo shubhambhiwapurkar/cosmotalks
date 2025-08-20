@@ -13,6 +13,9 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      - name: See the file structure
+        run: ls -R
+
       - name: Set up Node.js version
         uses: actions/setup-node@v1
         with:
@@ -24,7 +27,6 @@ jobs:
           GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
           COOKIE_KEY: ${{ secrets.COOKIE_KEY }}
         run: |
-          cd backend
           npm install
           npm run build --if-present
           npm run test --if-present
@@ -33,7 +35,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: node-app
-          path: backend
+          path: .
 
   deploy:
     runs-on: ubuntu-latest
