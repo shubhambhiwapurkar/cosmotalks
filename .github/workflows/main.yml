@@ -60,5 +60,4 @@ jobs:
         with:
           service: 'cosmotalks'
           region: 'us-central1'
-          source: '.'
           max-instances: 10
