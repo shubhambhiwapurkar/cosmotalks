@@ -4,6 +4,22 @@ const session = require('express-session');
 const passport = require('passport');
 const mongoose = require('mongoose');
 require('dotenv').config();
+
+if (process.env.NODE_ENV !== 'test') {
+  const requiredEnvVars = [
+    'MONGO_URI',
+    'COOKIE_KEY',
+    'GOOGLE_CLIENT_ID',
+    'GOOGLE_CLIENT_SECRET',
+  ];
+  for (const varName of requiredEnvVars) {
+    if (!process.env[varName]) {
+      console.error(`Error: Missing required environment variable: ${varName}`);
+      process.exit(1);
+    }
+  }
+}
+
 require('./models/user.model');
 require('./services/passport');
 
