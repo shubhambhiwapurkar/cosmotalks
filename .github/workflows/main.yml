@@ -39,7 +39,7 @@ jobs:
     needs: build
     environment:
       name: 'Production'
-      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
+      url: ${{ steps.deploy.outputs.url }}
 
     steps:
       - name: Download artifact from build job
@@ -47,15 +47,15 @@ jobs:
         with:
           name: node-app
 
-      - name: Login to Azure
-        uses: azure/login@v1
+      - name: 'Authenticate to Google Cloud'
+        uses: 'google-github-actions/auth@v2'
         with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
+          credentials_json: '${{ secrets.GCP_SA_KEY }}'
 
-      - name: 'Deploy to Azure Web App'
-        id: deploy-to-webapp
-        uses: azure/webapps-deploy@v2
+      - name: 'Deploy to Cloud Run'
+        id: deploy
+        uses: 'google-github-actions/deploy-cloudrun@v2'
         with:
-          app-name: 'cosmotalks-backend-app-unique'
-          slot-name: 'Production'
-          package: .
+          service: 'cosmotalks'
+          region: 'us-central1'
+          source: '.'
