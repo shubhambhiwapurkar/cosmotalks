@@ -27,7 +27,7 @@ jobs:
           GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
           COOKIE_KEY: ${{ secrets.COOKIE_KEY }}
         run: |
-          npm install
+          npm install --omit=dev
           npm run build --if-present
           npm run test --if-present
 
