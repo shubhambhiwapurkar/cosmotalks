@@ -14,11 +14,10 @@ describe('User Model', () => {
     expect(user).toHaveProperty('_id');
   });
 
-  it('should not create a user without a googleId', async () => {
+  it('should not create a user without an email', async () => {
     const userData = {
       displayName: 'Test User',
-      email: 'test@example.com',
-      photo: 'test.jpg',
+      googleId: '12345',
     };
     const user = new User(userData);
     let err;
@@ -28,6 +27,6 @@ describe('User Model', () => {
       err = error;
     }
     expect(err).toBeInstanceOf(mongoose.Error.ValidationError);
-    expect(err.errors.googleId).toBeDefined();
+    expect(err.errors.email).toBeDefined();
   });
 });
