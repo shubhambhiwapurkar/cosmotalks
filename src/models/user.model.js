@@ -1,14 +1,14 @@
 const mongoose = require('mongoose');
+const passportLocalMongoose = require('passport-local-mongoose');
 
 const userSchema = new mongoose.Schema({
   googleId: {
     type: String,
-    required: true,
     unique: true,
+    sparse: true,
   },
   displayName: {
     type: String,
-    required: true,
   },
   email: {
     type: String,
@@ -20,6 +20,8 @@ const userSchema = new mongoose.Schema({
     ref: 'BirthChart',
   },
 });
+
+userSchema.plugin(passportLocalMongoose, { usernameField: 'email' });
 
 const User = mongoose.model('User', userSchema);
 
