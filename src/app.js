@@ -4,14 +4,17 @@ const session = require('express-session');
 const passport = require('passport');
 const mongoose = require('mongoose');
 require('dotenv').config();
+const admin = require('firebase-admin');
 
 if (process.env.NODE_ENV !== 'test') {
-  const requiredEnvVars = [
-    'MONGO_URI',
-    'COOKIE_KEY',
-    'GOOGLE_CLIENT_ID',
-    'GOOGLE_CLIENT_SECRET',
-  ];
+  const serviceAccount = JSON.parse(
+    Buffer.from(process.env.FIREBASE_SERVICE_ACCOUNT, 'base64').toString('ascii')
+  );
+  admin.initializeApp({
+    credential: admin.credential.cert(serviceAccount),
+  });
+
+  const requiredEnvVars = ['MONGO_URI', 'COOKIE_KEY', 'FIREBASE_SERVICE_ACCOUNT'];
   for (const varName of requiredEnvVars) {
     if (!process.env[varName]) {
       console.error(`Error: Missing required environment variable: ${varName}`);

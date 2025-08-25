@@ -1,23 +1,23 @@
 const passport = require('passport');
 const authController = require('../controllers/auth.controller');
+const firebaseAuth = require('../middlewares/firebaseAuth');
 
 module.exports = app => {
   app.post('/api/register', authController.register);
   app.post('/api/login', authController.login);
+  app.post('/api/auth/firebase', firebaseAuth, authController.firebaseAuth);
 
   app.get(
     '/api/auth/google',
     passport.authenticate('google', {
-      scope: ['profile', 'email']
+      scope: ['profile', 'email'],
     })
   );
 
   app.get(
     '/api/auth/google/callback',
     passport.authenticate('google'),
-    (req, res) => {
-      res.redirect('http://localhost:3000/profile');
-    }
+    authController.googleCallback
   );
 
   app.get('/api/logout', (req, res) => {
@@ -25,7 +25,7 @@ module.exports = app => {
     res.redirect('/');
   });
 
-  app.get('/api/current_user', (req, res) => {
+  app.get('/api/current_user', firebaseAuth, (req, res) => {
     res.send(req.user);
   });
 };

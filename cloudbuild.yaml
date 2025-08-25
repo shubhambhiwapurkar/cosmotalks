@@ -1,0 +1,11 @@
+steps:
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      [
+        'build',
+        '-t',
+        'us-central1-docker.pkg.dev/cosmotalks/cosmotalks-backend/cosmotalks-backend:latest',
+        '.',
+      ]
+images:
+  - 'us-central1-docker.pkg.dev/cosmotalks/cosmotalks-backend/cosmotalks-backend:latest'

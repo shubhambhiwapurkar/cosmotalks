@@ -28,3 +28,29 @@ exports.login = (req, res, next) => {
     });
   })(req, res, next);
 };
+
+exports.firebaseAuth = async (req, res) => {
+  const { uid, email, name } = req.user;
+
+  try {
+    let user = await User.findOne({ firebaseId: uid });
+
+    if (!user) {
+      user = new User({
+        firebaseId: uid,
+        email,
+        displayName: name,
+      });
+      await user.save();
+    }
+
+    res.send(user);
+  } catch (error) {
+    console.error('Error in firebaseAuth controller:', error);
+    res.status(500).send({ message: 'Internal server error' });
+  }
+};
+
+exports.googleCallback = (req, res) => {
+  res.redirect('/dashboard');
+};
