@@ -1,8 +1,8 @@
-const { init } = require('./app');
+const appModule = require('./app');
 
 const PORT = process.env.PORT || 8080;
 
-init().then(app => {
+appModule.init().then(app => {
   app.listen(PORT, '0.0.0.0', () => {
     console.log(`Listening on port ${PORT}`);
     // require('./services/scheduler');
