@@ -25,8 +25,8 @@ jobs:
         uses: azure/docker-login@v1
         with:
           login-server: cosmotalksacr.azurecr.io
-          username: ${{ secrets.AZURE_CLIENT_ID }}
-          password: ${{ secrets.AZURE_CLIENT_SECRET }}
+          username: ${{ fromJson(secrets.AZURE_CREDENTIALS).clientId }}
+          password: ${{ fromJson(secrets.AZURE_CREDENTIALS).clientSecret }}
 
       - name: Build and push Docker image to ACR
         working-directory: .
