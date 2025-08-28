@@ -23,10 +23,8 @@ jobs:
 
       - name: Docker login to ACR
         run: |
-          AZURE_CREDENTIALS_JSON=${{ secrets.AZURE_CREDENTIALS }}
-          CLIENT_ID=$(echo $AZURE_CREDENTIALS_JSON | jq -r '.clientId')
-          CLIENT_SECRET=$(echo $AZURE_CREDENTIALS_JSON | jq -r '.clientSecret')
-          echo $CLIENT_SECRET | docker login cosmotalksacr.azurecr.io --username $CLIENT_ID --password-stdin
+          ACR_CREDENTIALS=$(az acr credential show --name cosmotalksacr --query "passwords.value" --output tsv)
+          echo $ACR_CREDENTIALS | docker login cosmotalksacr.azurecr.io --username cosmotalksacr --password-stdin
 
       - name: Build and push Docker image to ACR
         working-directory: .
