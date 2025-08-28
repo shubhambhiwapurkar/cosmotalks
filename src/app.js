@@ -29,10 +29,12 @@ require('./services/passport');
 const app = express();
 
 if (process.env.NODE_ENV !== 'test') {
-  mongoose.connect(process.env.MONGO_URI).catch(err => {
-    console.error('Failed to connect to MongoDB', err);
-    process.exit(1);
-  });
+  mongoose.connect(process.env.MONGO_URI)
+    .then(() => console.log('Connected to MongoDB'))
+    .catch(err => {
+      console.error('Failed to connect to MongoDB', err);
+      process.exit(1);
+    });
 }
 
 app.use(
