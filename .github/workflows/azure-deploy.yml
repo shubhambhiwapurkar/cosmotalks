@@ -21,6 +21,7 @@ jobs:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
       - name: Build and push Docker image to ACR
+        working-directory: .
         run: |
           docker build ./backend -t cosmotalksacr.azurecr.io/cosmotalks-backend:${{ github.sha }}
           docker push cosmotalksacr.azurecr.io/cosmotalks-backend:${{ github.sha }}
