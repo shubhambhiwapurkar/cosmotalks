@@ -1,0 +1,32 @@
+name: Deploy to Azure App Service
+
+on:
+  push:
+    branches:
+      - master
+  workflow_dispatch:
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Log in to Azure
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Build and push Docker image to ACR
+        run: |
+          docker build ./backend -t cosmotalksacr.azurecr.io/cosmotalks-backend:${{ github.sha }}
+          docker push cosmotalksacr.azurecr.io/cosmotalks-backend:${{ github.sha }}
+
+      - name: Deploy to Azure Web App
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: cosmotalks-backend-app-unique
+          slot-name: 'production'
+          images: 'cosmotalksacr.azurecr.io/cosmotalks-backend:${{ github.sha }}'
+          resource-group: cosmotalks-rg
