@@ -54,3 +54,40 @@ exports.firebaseAuth = async (req, res) => {
 exports.googleCallback = (req, res) => {
   res.redirect('/dashboard');
 };
+
+exports.testLogin = async (req, res, next) => {
+  const testEmail = 'test@example.com';
+  const testPassword = 'testpassword';
+  const testDisplayName = 'Test User';
+
+  try {
+    let user = await User.findOne({ email: testEmail });
+
+    if (!user) {
+      // Register the test user if they don't exist
+      user = new User({ email: testEmail, displayName: testDisplayName });
+      await User.register(user, testPassword);
+      console.log('Test user registered:', testEmail);
+    }
+
+    // Log in the test user
+    passport.authenticate('local', (err, authenticatedUser, info) => {
+      if (err) {
+        return next(err);
+      }
+      if (!authenticatedUser) {
+        return res.status(401).send(info);
+      }
+      req.logIn(authenticatedUser, (err) => {
+        if (err) {
+          return next(err);
+        }
+        return res.send(authenticatedUser);
+      });
+    })({ body: { username: testEmail, password: testPassword } }, res, next);
+
+  } catch (error) {
+    console.error('Error in testLogin controller:', error);
+    res.status(500).send({ message: 'Internal server error during test login' });
+  }
+};

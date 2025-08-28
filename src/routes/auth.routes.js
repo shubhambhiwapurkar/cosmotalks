@@ -6,6 +6,7 @@ module.exports = app => {
   app.post('/api/register', authController.register);
   app.post('/api/login', authController.login);
   app.post('/api/auth/firebase', firebaseAuth, authController.firebaseAuth);
+  app.post('/api/test-login', authController.testLogin);
 
   app.get(
     '/api/auth/google',
