@@ -28,13 +28,22 @@ require('./services/passport');
 
 const app = express();
 
-if (process.env.NODE_ENV !== 'test') {
-  mongoose.connect(process.env.MONGO_URI)
-    .then(() => console.log('Connected to MongoDB'))
-    .catch(err => {
-      console.error('Failed to connect to MongoDB', err);
-      process.exit(1);
-    });
+function init() {
+  return new Promise((resolve, reject) => {
+    if (process.env.NODE_ENV !== 'test') {
+      mongoose.connect(process.env.MONGO_URI)
+        .then(() => {
+          console.log('Connected to MongoDB');
+          resolve(app);
+        })
+        .catch(err => {
+          console.error('Failed to connect to MongoDB', err);
+          process.exit(1);
+        });
+    } else {
+      resolve(app);
+    }
+  });
 }
 
 app.use(
@@ -69,4 +78,4 @@ app.get('/', (req, res) => {
   res.send('AI Astrology Chatbot Backend');
 });
 
-module.exports = app;
+module.exports = { app, init };

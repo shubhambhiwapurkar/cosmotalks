@@ -1,9 +1,10 @@
-const app = require('./app');
+const { init } = require('./app');
 
-const PORT = 8080;
+const PORT = process.env.PORT || 8080;
 
-app.listen(PORT, () => {
-  console.log(`Listening on port ${PORT}`);
-// require('./services/scheduler');
-//
+init().then(app => {
+  app.listen(PORT, () => {
+    console.log(`Listening on port ${PORT}`);
+    // require('./services/scheduler');
+  });
 });
