@@ -21,6 +21,10 @@ jobs:
       - name: List files in repository root
         run: ls -F
 
+      - name: Docker login to ACR
+        run: |
+          echo "${{ secrets.AZURE_CREDENTIALS }}" | docker login cosmotalksacr.azurecr.io --username ${{ secrets.AZURE_CLIENT_ID }} --password-stdin
+
       - name: Build and push Docker image to ACR
         working-directory: .
         run: |
